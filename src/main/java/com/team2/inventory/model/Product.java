@@ -25,37 +25,20 @@ public class Product {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dom;
 	private String colour;
-	// @Min(1)
 	@Column(nullable = false)
 	private double oriPrice;
-	// @Min(1)
 	private double wholesalePrice; // lower price
-	// @Min(1)
 	private double retailPrice; // highest price
-	// @Min(1)
 	private double partnerPrice; // 2nd highest
 	private String description;
 	private String dimension;
 	private String category;
-	private int supId; // supplier's id
-	// @Min(1)
-//	@Column(nullable = false)
-	private int reorderLevel; // reorder level
-	// @Min(1)
-//	@Column(nullable = false)
-	private int minReorderQuantity; // minimum reorder quantity
-	@ManyToOne(cascade = CascadeType.MERGE)
-	private Supplier supplier;
-	@OneToOne(cascade = CascadeType.ALL)
-	private Inventory inventory;
-
 	public Product() {
 		super();
 	}
 
 	public Product(String name, String brand, LocalDate dom, String colour, double oriPrice, double wholesalePrice,
-			double retailPrice, double partnerPrice, String description, String dimension, String category,
-			int reorderLevel, int minReorderQuantity, Supplier supplier) {
+			double retailPrice, double partnerPrice, String description, String dimension, String category) {
 		super();
 		this.name = name;
 		this.brand = brand;
@@ -68,53 +51,6 @@ public class Product {
 		this.description = description;
 		this.dimension = dimension;
 		this.category = category;
-		this.reorderLevel = reorderLevel;
-		this.minReorderQuantity = minReorderQuantity;
-		this.supplier = supplier;
-		this.inventory = new Inventory();
-	}
-
-	public Product(String name, String brand, LocalDate dom, String colour, double oriPrice, double wholesalePrice,
-			double retailPrice, double partnerPrice, String description, String dimension, String category,
-			int reorderLevel, int minReorderQuantity) {
-		super();
-		this.name = name;
-		this.brand = brand;
-		this.dom = dom;
-		this.colour = colour;
-		this.oriPrice = oriPrice;
-		this.wholesalePrice = wholesalePrice;
-		this.retailPrice = retailPrice;
-		this.partnerPrice = partnerPrice;
-		this.description = description;
-		this.dimension = dimension;
-		this.category = category;
-		this.reorderLevel = reorderLevel;
-		this.minReorderQuantity = minReorderQuantity;
-		this.supplier = new Supplier();
-		this.inventory = new Inventory();
-	}
-	
-	public Product(String name, String brand, LocalDate dom, String colour, double oriPrice, double wholesalePrice,
-			double retailPrice, double partnerPrice, String description, String dimension, String category, 
-			int supplierId, int reorderLevel, int minReorderQuantity, Supplier supplier, Inventory inventory) {
-		super();
-		this.name = name;
-		this.brand = brand;
-		this.dom = dom;
-		this.colour = colour;
-		this.oriPrice = oriPrice;
-		this.wholesalePrice = wholesalePrice;
-		this.retailPrice = retailPrice;
-		this.partnerPrice = partnerPrice;
-		this.description = description;
-		this.dimension = dimension;
-		this.category = category;
-		this.reorderLevel = reorderLevel;
-		this.minReorderQuantity = minReorderQuantity;
-		this.supId = supplierId;
-		this.supplier = supplier;
-		this.inventory = inventory;
 	}
 	
 	public int getId() {
@@ -213,91 +149,7 @@ public class Product {
 		this.category = category;
 	}
 
-	public int getReorderLevel() {
-		return reorderLevel;
-	}
-
-	public void setReorderLevel(int reorderLevel) {
-		this.reorderLevel = reorderLevel;
-	}
-
-	public int getMinReorderQuantity() {
-		return minReorderQuantity;
-	}
-
-	public void setMinReorderQuantity(int minReorderQuantity) {
-		this.minReorderQuantity = minReorderQuantity;
-	}
-
-	public Supplier getSupplier() {
-		return supplier;
-	}
-
-	public void setSupplier(Supplier supplier) {
-		this.supplier = supplier;
-	}
-
-	public Inventory getInventory() {
-		return inventory;
-	}
-
-	public void setInventory(Inventory inventory) {
-		this.inventory = inventory;
-	}
-
-	public int getSupId() {
-		return supId;
-	}
-
-	public void setSupId(int supId) {
-		this.supId = supId;
-	}
-
-	// FOR RE-ORDER REPORT
-
-	public int CalculateOrdQty(int Qty, int ReOrderQty, int MinOrdQty) {
-
-		if (Qty < ReOrderQty) {
-			if ((ReOrderQty - Qty) < MinOrdQty) {
-				return MinOrdQty;
-			} else {
-				return (ReOrderQty - Qty);
-			}
-		} else
-			return 0;
-	}
-
 	public double CalculatePrice(int OrdQty, double oriPrice) {
 		return Math.round(OrdQty * oriPrice * 100.0) / 100.0;
 	}
-
-	@Override
-	public String toString() {
-		return "Product [id=" + id + ", qty=" + inventory.getQuantity() + "Unit.Price=" + oriPrice + ", ReorderQty="
-				+ reorderLevel + ", Min.ord.qty=" + minReorderQuantity + ", Ord.Qty="
-				+ CalculateOrdQty(inventory.getQuantity(), reorderLevel, minReorderQuantity) + ",Price = "
-				+ CalculatePrice(CalculateOrdQty(inventory.getQuantity(), reorderLevel, minReorderQuantity), oriPrice)
-				+ " ]";
-	}
-
-	public String toString1() {
-		return " id " + " qty " + " Unit.Price " + " Reorder qty " + " Min.ord.qty " + " Ord.Qty " + " Price ";
-	}
-
-	public String toString2() {
-		
-		int orderQuantity = CalculateOrdQty(inventory.getQuantity(), reorderLevel, minReorderQuantity);
-		
-		return " " + id + "   " + inventory.getQuantity() + "    " + oriPrice + "        " + reorderLevel
-				+ "           " + minReorderQuantity + "            "
-				+ orderQuantity + "       "
-				+ CalculatePrice(orderQuantity, oriPrice);
-	}
-
-	public double getPrice() {
-		int orderQuantity = CalculateOrdQty(inventory.getQuantity(), reorderLevel, minReorderQuantity);
-		
-		return CalculatePrice(orderQuantity, oriPrice);
-	}
-
 }

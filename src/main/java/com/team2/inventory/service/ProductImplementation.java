@@ -3,7 +3,6 @@ package com.team2.inventory.service;
 import com.team2.inventory.interfacemethods.ProductInterface;
 import com.team2.inventory.repository.ProductRepository;
 import com.team2.inventory.model.Product;
-import com.team2.inventory.model.Supplier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -103,86 +102,5 @@ public class ProductImplementation implements ProductInterface {
     @Transactional
     public List<Product> SearchProductByDescription(String description) {
         return prepo.SearchProductByDescription(description);
-    }
-    
-    @Override
-    @Transactional
-    public List<Product> SearchProductBySupplier(String supplier) {
-        return prepo.SearchProductBySupplier(supplier);
-    }
-    
-    @Override
-	@Transactional
-	public List<Product> findBySupplierId(int id) {
-		return prepo.findBySupplierId(id);
-	}
-
-    @Transactional
-    public void reorderReport(int id) {
-    	
-        BufferedWriter bw = null;
-        try {
-            List<Product> mycontent=prepo.reorderReport(id);
-            if(mycontent.size()==0) {
-                return;
-            }
-            //REMEMBER TO CHANGE LOCAL PATH
-            File file = new File("D:\\reorderreport.dat");
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-            
-            Supplier supplier = mycontent.get(0).getSupplier();
-            
-            //Writing the report
-            FileWriter fw = new FileWriter(file);
-
-            bw = new BufferedWriter(fw);
-            bw.write("\t\tInventory Reorder Report for products from Supplier: " + supplier.getName() + " [" + supplier.getEmail()+"]");
-            bw.newLine();
-            bw.write("----------------------------------------------------------------------------------------");
-            bw.newLine();
-            bw.write("=========================================================================================");
-
-            bw.newLine();
-
-            double total = 0;
-            for(Product p:mycontent) {
-                if(mycontent.get(0) == p)
-                {
-                    bw.newLine();
-                    bw.write(p.toString1());
-                    bw.newLine();
-                }
-                bw.newLine();
-                bw.write(p.toString2());
-                bw.newLine();
-                total = total + p.getPrice();
-                bw.newLine();
-
-            }
-            bw.newLine();
-            bw.write("=========================================================================================");
-            bw.newLine();
-            bw.write("TOTAL: " +  Math.round(total * 100.0) / 100.0);
-            bw.newLine();
-            bw.write("=========================================================================================");
-            bw.newLine();
-            bw.write("End Of Report");
-
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
-        finally
-        {
-            try{
-                if(bw!=null)
-                    bw.close();
-            }catch(Exception ex){
-                System.out.println("Error in closing the BufferedWriter"+ex);
-            }
-        }
-        
-
     }
 }

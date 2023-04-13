@@ -60,8 +60,8 @@ public class SessionsController {
             httpSession.setAttribute("userdetails", user);
             if (user.getRole() == Role.ADMIN) {
                 return "redirect:admin/dashboard";
-            } else if (user.getRole() == Role.MECHANIC) {
-                return "redirect:mechanic/dashboard";
+            } else {
+                return "redirect:/index";
             }
         }
         return "redirect:/index";
