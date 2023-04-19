@@ -2867,7 +2867,7 @@ body {
   -webkit-align-items: center;
   -ms-align-items: center;
   align-items: center;
-  background: #fff;
+  background: #18007a;
   cursor: default;
   height: 6em;
   left: 0;
@@ -2878,6 +2878,10 @@ body {
   z-index: 10001;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.075);
   text-align: center;
+}
+
+#header a{
+color: white !important;
 }
 
 #header .logo {
@@ -3106,7 +3110,6 @@ body {
 /* Banner */
 
 #banner {
-  padding: 14em 0 12em 0;
   background-image: url(../../images/banner.jpg);
   background-size: cover;
   background-position: center top;
@@ -3115,6 +3118,7 @@ body {
 }
 
 #banner .content {
+padding: 5em 0;
   -moz-transition: opacity 1s ease-in-out, -moz-transform 0.75s ease-in-out;
   -webkit-transition: opacity 1s ease-in-out,
     -webkit-transform 0.75s ease-in-out;

@@ -105,6 +105,9 @@ public class AdminController {
 			return "UserCreation";
 		}
 
+		String pwd = user.getPassword();
+		String encryptPwd = bCryptPasswordEncoder.encode(pwd);
+		user.setPassword(encryptPwd);
 		userImplementation.updateUser(user);
 		return "forward:/admin/list";
 	}
