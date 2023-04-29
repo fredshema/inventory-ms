@@ -152,6 +152,7 @@
             <label for="" class="form-label"> Role </label>
             <select th:field="*{Role}">
               <option value="ADMIN">Admin</option>
+              <option value="EMPLOYEE">Employee</option>
             </select>
             <p th:if="${#fields.hasErrors('Role')}" th:errors="*{Role}"></p>
           </fieldset>

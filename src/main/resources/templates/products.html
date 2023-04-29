@@ -14,46 +14,24 @@
       <nav class="left">
         <a href="#menu"><span>Menu</span></a>
       </nav>
-      <div
-        th:if="${session.userdetails.role == T(com.team2.inventory.model.Role).ADMIN}"
-      >
-        <a href="/admin/dashboard" class="logo"
-          ><p
-            th:utext="${session.userdetails.firstName}+' ' +${session.userdetails.lastName}"
-          ></p
-        ></a>
+      <div>
+        <a href="/admin/dashboard" class="logo">
+          <p th:utext="${session.userdetails.firstName}+' ' +${session.userdetails.lastName}">
+          </p>
+        </a>
       </div>
       <nav class="right">
         <a href="/logout" class="button alt">Log out</a>
       </nav>
     </header>
 
-    <!-- Menu -->
-
-    <nav id="menu">
-      <ul class="links">
-        <li
-          th:if="${session.userdetails.role == T(com.team2.inventory.model.Role).ADMIN}"
-        >
-          <a href="/admin/list">Employees</a>
-        </li>
-        <li><a href="/all/product/list">Products</a></li>
-        <li><a href="/all/catalogue/customers">Customers</a></li>
-        <li><a href="/all/catalogue/listrecord">Stock Usage Records</a></li>
-      </ul>
-      <ul class="actions vertical">
-        <li><a href="#" class="button fit">Logout</a></li>
-      </ul>
-    </nav>
     <div class="container mt-5">
       <div class="row">
         <div class="col">
           <h2 class="mb-0">Product List</h2>
         </div>
         <div class="col-auto">
-          <div
-            th:if="${session.userdetails.role == T(com.team2.inventory.model.Role).ADMIN}"
-          >
+          <div>
             <a class="btn btn-primary" th:href="@{/admin/product/add}">
               Add New Product
             </a>
@@ -63,7 +41,7 @@
       <h2 th:if="${#lists.isEmpty(products)}" style="text-align: center">
         You haven't added any products yet
       </h2>
-      <table th:if="${not #lists.isEmpty(products)}">
+      <table th:if="${not #lists.isEmpty(products)}" class="border">
         <tr>
           <th>ID</th>
           <th>Name</th>
@@ -74,11 +52,7 @@
           <th>Retail Price</th>
           <th>Partner Price</th>
           <th>Category</th>
-          <th
-            th:if="${session.userdetails.role == T(com.team2.inventory.model.Role).ADMIN}"
-          >
-            Edit
-          </th>
+          <th>Edit</th>
           <th
             th:if="${session.userdetails.role == T(com.team2.inventory.model.Role).ADMIN}"
           >
@@ -90,19 +64,16 @@
           <td th:text="${product.name}">name</td>
           <td th:text="${product.brand}">brand</td>
           <td th:text="${product.colour}">colour</td>
-          <td th:text="${product.oriPrice}">oriPrice</td>
-          <td th:text="${product.wholesalePrice}">wholesalePrice</td>
-          <td th:text="${product.retailPrice}">retailPrice</td>
-          <td th:text="${product.partnerPrice}">partnerPrice</td>
-          <td th:text="${product.category}">category</td>
-          <td
-            th:if="${session.userdetails.role == T(com.team2.inventory.model.Role).ADMIN}"
-          >
+          <td th:text="${product.oriPrice}">Original</td>
+          <td th:text="${product.wholesalePrice}">wholesale</td>
+          <td th:text="${product.retailPrice}">Retail</td>
+          <td th:text="${product.partnerPrice}">Partner</td>
+          <td th:text="${product.category}">Category</td>
+          <td>
             <a
               href="EditProduct.html"
               th:href="@{/admin/product/edit/}+${product.id}"
-              >Edit</a
-            >
+              >Edit</a>
           </td>
           <td
             th:if="${session.userdetails.role == T(com.team2.inventory.model.Role).ADMIN}"

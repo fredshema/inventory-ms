@@ -34,32 +34,8 @@ public class ProductController {
     private UserInterface uservice;
 
     @RequestMapping(value = "/all/product/list")
-    public String listusers(Model model) {
-
-        return listByPage(model, 1,"id","asc");
-    }
-
-    @GetMapping("/all/product/page/{pageNumber}")
-    public String listByPage(Model model, @PathVariable("pageNumber") int currentPage,
-                             @Param("sortField")String sortField,
-                             @Param("sortDir") String sortDir) {
-        Page<Product> page = pservice.findAllProduts(currentPage,sortField,sortDir);
-
-        long total = page.getTotalElements();
-        int totalPages = page.getTotalPages();
-
-        List<Product> list = page.getContent();
-
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("total", total);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("list", list);
-        model.addAttribute("sortField", sortField);
-        model.addAttribute("sortDir", sortDir);
-        String reverseSortDir=sortDir.equals("asc")?"desc":"asc";
-        model.addAttribute("reverseSortDir", reverseSortDir);
-        model.addAttribute("products", pservice.findAllProduts(currentPage,sortField,sortDir));
-
+    public String listProducts(Model model) {
+        model.addAttribute("products", pservice.findAllProducts());
         return "products";
     }
 

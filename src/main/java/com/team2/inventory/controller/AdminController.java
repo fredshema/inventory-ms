@@ -1,10 +1,9 @@
 package com.team2.inventory.controller;
 
 import com.team2.inventory.model.User;
+import com.team2.inventory.service.ProductImplementation;
 import com.team2.inventory.service.UserImplementation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.repository.query.Param;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +11,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 //userdetails as session model name
 //user as attributename for employee
@@ -25,6 +23,8 @@ public class AdminController {
 
 	@Autowired
 	private UserImplementation userImplementation;
+	@Autowired
+	private ProductImplementation productImplementation;
 
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -33,38 +33,18 @@ public class AdminController {
 	@GetMapping("/dashboard")
 	public String getDashboard(Model model) {
 		User user = new User();
+		int employees = userImplementation.findAll().size();
+		int products = productImplementation.findAllProducts().size();
+
 		model.addAttribute("user", user);
+		model.addAttribute("employees", employees);
+		model.addAttribute("products", products);
 		return "AdminDashboard";
 	}
 
-	// Implement Pagination for Admin to view ALL the users
-
 	@RequestMapping(value = "/list")
 	public String listusers(Model model) {
-
-		return listByPage(model, 1,"id","asc");
-	}
-
-	@GetMapping("/page/{pageNumber}")
-	public String listByPage(Model model, @PathVariable("pageNumber") int currentPage,
-			@Param("sortField") String sortField, @Param("sortDir") String sortDir) {
-		Page<User> page = userImplementation.findAll(currentPage, sortField, sortDir);
-
-		long total = page.getTotalElements();
-		int totalPages = page.getTotalPages();
-
-		List<User> list = page.getContent();
-
-		model.addAttribute("currentPage", currentPage);
-		model.addAttribute("total", total);
-		model.addAttribute("totalPages", totalPages);
-		model.addAttribute("list", list);
-		model.addAttribute("sortField", sortField);
-		model.addAttribute("sortDir", sortDir);
-
-		String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
-		model.addAttribute("reverseSortDir", reverseSortDir);
-		model.addAttribute("users", userImplementation.findAll(currentPage, sortField, sortDir));
+		model.addAttribute("users", userImplementation.findAll());
 		return "ViewAllUsers";
 	}
 
@@ -105,9 +85,13 @@ public class AdminController {
 			return "UserCreation";
 		}
 
-		String pwd = user.getPassword();
-		String encryptPwd = bCryptPasswordEncoder.encode(pwd);
-		user.setPassword(encryptPwd);
+		if(user.getPassword() == null || user.getPassword().isEmpty()) {
+			user.setPassword(userImplementation.findById(user.getId()).getPassword());
+		}else{
+			String pwd = user.getPassword();
+			String encryptPwd = bCryptPasswordEncoder.encode(pwd);
+			user.setPassword(encryptPwd);
+		}
 		userImplementation.updateUser(user);
 		return "forward:/admin/list";
 	}

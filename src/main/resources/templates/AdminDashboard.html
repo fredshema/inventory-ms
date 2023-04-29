@@ -22,43 +22,60 @@
         <a href="/logout" class="button alt">Log out</a>
       </nav>
     </header>
-
-    <!-- Menu -->
-
-    <nav id="menu">
-      <ul class="links">
-        <li><a href="/admin/list">Employees</a></li>
-        <li><a href="/all/product/list">Products</a></li>
-        <li><a href="/all/catalogue/listrecord">Stock Usage Records</a></li>
-      </ul>
-      <ul class="actions vertical">
-        <li><a href="#" class="button fit">Logout</a></li>
-      </ul>
-    </nav>
-
     <!-- White Space Content -->
 
     <div class="container" style="margin-top: 60px">
-      <div class="row justify-content-center">
-        <div class="col-auto">
-          <div class="card" style="width: 18rem">
-            <div class="card-body">
-              <h5 class="card-title">Employees</h5>
-              <p class="card-text">Manage Employee Record.</p>
-              <a href="/admin/list" class="btn btn-danger">View</a>
+      <div class="row">
+        <div class="col-4">
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <a href="/admin/list" class="p-3">
+                  Manage Employee Record.
+                </a>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="card">
+                <a href="/all/product/list" class="p-3">
+                Manage Products.
+                </a>
+              </div>
             </div>
           </div>
         </div>
-        <div class="col-auto">
-          <div class="card" style="width: 18rem">
-            <div class="card-body">
-              <h5 class="card-title">Products</h5>
-              <p class="card-text">Manage Products.</p>
-              <a href="/all/product/list" class="btn btn-danger">View</a>
+        <div class="col-8">
+          <div class="row justify-content-center">
+            <div class="col-auto">
+              <div class="card" style="width: 18rem">
+                <div class="card-body">
+                    <span>
+                        <i class="fa fa-user fa-5x"></i>
+                    </span>
+                  <h5 class="card-title">
+                    <span th:text="${employees}"></span>
+                    Employees
+                  </h5>
+                </div>
+              </div>
+            </div>
+            <div class="col-auto">
+              <div class="card" style="width: 18rem">
+                <div class="card-body">
+                  <span>
+                    <i class="fa fa-shopping-cart fa-5x"></i>
+                  </span>
+                  <h5 class="card-title">
+                    <span th:text="${products}"></span>
+                    Products
+                  </h5>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
+
     </div>
   </body>
 </html>

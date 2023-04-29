@@ -2,30 +2,6 @@ package com.team2.inventory.repository;
 
 import com.team2.inventory.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product, Integer> {
-    public List<Product> findByName(String name);
-    public List<Product> findByColour(String color);
-    public List<Product> findByBrand(String brand);
-    public List<Product> findByDescriptionContaining(String keyword);
-
-    @Query("Select p from Product as p where p.name like CONCAT('%',:k,'%') ")
-    public ArrayList<Product> SearchProductByName(@Param("k") String keyword);
-
-    @Query("Select p from Product as p where p.brand like CONCAT('%',:k,'%') ")
-    public ArrayList<Product> SearchProductByBrand(@Param("k") String keyword);
-
-    @Query("Select p from Product as p where p.colour like CONCAT('%',:k,'%') ")
-    public ArrayList<Product> SearchProductByColour(@Param("k") String keyword);
-
-    @Query("Select p from Product as p where p.category like CONCAT('%',:k,'%') ")
-    public ArrayList<Product> SearchProductByCategory(@Param("k") String keyword);
-
-    @Query("Select p from Product as p where p.description like CONCAT('%',:k,'%') ")
-    public ArrayList<Product> SearchProductByDescription(@Param("k") String keyword);
 }

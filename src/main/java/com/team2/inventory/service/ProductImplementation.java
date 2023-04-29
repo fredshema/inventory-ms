@@ -1,8 +1,8 @@
 package com.team2.inventory.service;
 
 import com.team2.inventory.interfacemethods.ProductInterface;
-import com.team2.inventory.repository.ProductRepository;
 import com.team2.inventory.model.Product;
+import com.team2.inventory.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,12 +11,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -59,48 +53,5 @@ public class ProductImplementation implements ProductInterface {
     @Transactional
     public void deleteProduct(Product product) {
         prepo.delete(product);
-    }
-
-    @Override
-    @Transactional
-    public List<String> findAllProductNames() {
-        List<Product> products = prepo.findAll();
-        List<String> names = new ArrayList<String>();
-        for (Iterator<Product> iterator = products.iterator(); iterator.hasNext();) {
-            Product product = (Product) iterator.next();
-            names.add(product.getName());
-        }
-        return names;
-
-    }
-
-    @Override
-    @Transactional
-    public List<Product> SearchProductByName(String name) {
-        return prepo.SearchProductByName(name);
-    }
-
-    @Override
-    @Transactional
-    public List<Product> SearchProductByBrand(String brand) {
-        return prepo.SearchProductByBrand(brand);
-    }
-
-    @Override
-    @Transactional
-    public List<Product> SearchProductByColour(String colour) {
-        return prepo.SearchProductByColour(colour);
-    }
-
-    @Override
-    @Transactional
-    public List<Product> SearchProductByCategory(String category) {
-        return prepo.SearchProductByCategory(category);
-    }
-
-    @Override
-    @Transactional
-    public List<Product> SearchProductByDescription(String description) {
-        return prepo.SearchProductByDescription(description);
     }
 }

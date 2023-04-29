@@ -15,33 +15,14 @@
         <a href="#menu"><span>Menu</span></a>
       </nav>
       <a href="/admin/dashboard" class="logo"
-        ><p
-          th:utext="${session.userdetails.firstName}+' ' +${session.userdetails.lastName}"
+      >
+        <p th:utext="${session.userdetails.firstName}+' ' +${session.userdetails.lastName}"
         ></p
-      ></a>
+        ></a>
       <nav class="right">
         <a href="/logout" class="button alt">Log out</a>
       </nav>
     </header>
-    <!-- Menu -->
-
-    <nav id="menu">
-      <ul class="links">
-        <li><a href="/admin/adduser">Register New Employee</a></li>
-      </ul>
-
-      <ul class="links">
-        <li
-          th:if="${session.userdetails.role == T(com.team2.inventory.model.Role).ADMIN}"
-        >
-          <a href="/admin/list">Employees</a>
-        </li>
-        <li><a href="/all/product/list">Products</a></li>
-      </ul>
-      <ul class="actions vertical">
-        <li><a href="#" class="button fit">Logout</a></li>
-      </ul>
-    </nav>
     <br />
 
     <div class="container">
@@ -49,16 +30,16 @@
         <div class="col">
           <h2>Employee List</h2>
         </div>
-        <div class="col-auto">
+        <div class="col-auto" th:if="${session.userdetails.role == T(com.team2.inventory.model.Role).ADMIN}">
           <a href="/admin/adduser" class="btn btn-primary"
-            >Register New Employee</a
+          >Register New Employee</a
           >
         </div>
       </div>
       <br />
 
       <div>
-        <table th:if="${not #lists.isEmpty(users)}">
+        <table th:if="${not #lists.isEmpty(users)}" class="border">
           <tr>
             <th>ID</th>
             <th>First Name</th>
@@ -67,8 +48,8 @@
             <th>Email</th>
             <th>Role</th>
             <th>View</th>
-            <th>Edit</th>
-            <th>Delete</th>
+            <th th:if="${session.userdetails.role == T(com.team2.inventory.model.Role).ADMIN}">Edit</th>
+            <th th:if="${session.userdetails.role == T(com.team2.inventory.model.Role).ADMIN}">Delete</th>
           </tr>
 
           <tr th:each="user:${users}">
@@ -87,12 +68,12 @@
               </a>
             </td>
 
-            <td>
+            <td th:if="${session.userdetails.role == T(com.team2.inventory.model.Role).ADMIN}">
               <a href="EditUser.html" th:href="@{/admin/edit/} + ${user.id}">
                 Edit
               </a>
             </td>
-            <td>
+            <td th:if="${session.userdetails.role == T(com.team2.inventory.model.Role).ADMIN}">
               <a href="DeleteUser.html" th:href="@{/admin/delete/}+${user.id}">
                 Delete
               </a>

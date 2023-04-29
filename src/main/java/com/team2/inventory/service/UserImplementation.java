@@ -1,16 +1,15 @@
 package com.team2.inventory.service;
 
 import com.team2.inventory.interfacemethods.UserInterface;
-import com.team2.inventory.repository.UserRepository;
-import com.team2.inventory.model.Role;
 import com.team2.inventory.model.User;
+import com.team2.inventory.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -58,30 +57,7 @@ public class UserImplementation implements UserInterface {
 	}
 
 	// Pagination
-	public Page<User> findAll(int pageNumber, String sortField, String sortDir) {
-		Sort sort = Sort.by(sortField);
-		sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
-		Pageable pageable = PageRequest.of(pageNumber - 1, 5, sort);
-
-		return userRepository.findAll(pageable);
+	public List<User> findAll() {
+		return userRepository.findAll();
 	}
-
-	@Override
-	public List<User> findAdmin() {
-		return userRepository.findUsersByRole(Role.ADMIN);
-	}
-
-	@Override
-	public String[] findAdminEmail() {
-		List<User> uList = userRepository.findUsersByRole(Role.ADMIN);
-		String[] mList = new String[uList.size()];
-		int counter = 0;
-		for (User user : uList) {
-			mList[counter] = user.getEmail();
-			counter++;
-		}
-		return mList;
-	}
-
-	
 }
